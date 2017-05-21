@@ -36,6 +36,7 @@ export default class QRCodeScanner extends Component {
       PropTypes.element,
       PropTypes.string,
     ]),
+    vibrate: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -43,6 +44,7 @@ export default class QRCodeScanner extends Component {
     reactivate: false,
     reactivateTimeout: 0,
     fadeIn: true,
+    vibrate: true,
   }
 
   constructor(props) {
@@ -75,8 +77,10 @@ export default class QRCodeScanner extends Component {
   }
 
   _handleBarCodeRead(e) {
-    Vibration.vibrate();
     if (!this.state.scanning) {
+      if (this.props.vibrate) {
+        Vibration.vibrate();
+      }
       this._setScanning(true);
       this.props.onRead(e)
       if (this.props.reactivate) {
